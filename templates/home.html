@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block heading %}
   <h1>BackLogs</h1>
+
 {% endblock %}
 {% block content %}
+    <h1> <a href="{% url 'new_backlog' %}">New BackLog</a></h1>
     <table border="1">
       <thead>
         <tr>
@@ -21,7 +23,11 @@
               <small style="color: #888;">{{ backlog.description }}</small>
             </td>
               <td>{{ backlog.sprints.all.count }}</td>
-              <td>0</td>
+
+
+              <td>{{li}}</td>
+
+
               <td>{{ backlog.start_at }}</td>
               <td>{{ backlog.end_at}}</td>
           </tr>

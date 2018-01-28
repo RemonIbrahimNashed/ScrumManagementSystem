@@ -24,7 +24,7 @@
       {% for sprint in backlog.sprints.all %}
         <tr>
             <td>{{ sprint.id }}</td>
-            <td>{{ sprint.name }}</td>
+            <td><a href="{% url 'sprint_tasks' backlog.pk sprint.pk%}">{{ sprint.name }}</a></td>
             <td>{{ sprint.tasks.all.count }}</td>
             <td>{{ sprint.start_at }}</td>
             <td>{{ sprint.end_at }}</td>
