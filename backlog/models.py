@@ -32,8 +32,11 @@ class Task(models.Model):
     description = models.CharField(max_length=255)
     start_at = models.DateField(auto_now_add=True)
     end_at = models.DateField(auto_now_add=False, auto_now=False)
-    assigned_user = models.ForeignKey(User, related_name='tasks', on_delete=models.DO_NOTHING)
+    assigned_user = models.ForeignKey(User, related_name='tasks', null=True, on_delete=models.DO_NOTHING)
     sprint = models.ForeignKey(Sprint, related_name='tasks', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+
+
