@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^backlogs/(?P<pk>\d+)/sprints/(?P<spk>\d+)/$', views.sprint_tasks, name='sprint_tasks'),
     url(r'^backlogs/(?P<pk>\d+)/sprints/(?P<spk>\d+)/new$', views.new_task, name='new_task'),
     url(r'^backlogs/(?P<pk>\d+)/new/$', views.new_sprint, name='new_sprint'),
+    url(r'^register/$', views.RegisterView.as_view(), name='register'),
+    url(r'^login/$', views.LoginView.as_view(), name='login'),
 
 
 
