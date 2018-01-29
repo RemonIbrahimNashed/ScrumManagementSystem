@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'backlog',
 ]
 
+AUTH_USER_MODEL = 'backlog.User'  # Changing the built-in user model
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
