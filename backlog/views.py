@@ -19,13 +19,6 @@ def home(request):
     return render(request, 'home.html', {'backlogs': backlogs, 'li': li})
 
 
-def count(request, pk):
-    backlog = get_object_or_404(BackLog, pk=pk)
-    counter = 0
-    for sprint in backlog.sprints.all.count():
-        counter += sprint.tasks.all.count()
-    return render(request, 'home.html', {'counter': counter})
-
 
 def backlog_sprints(request, pk):
     backlog = get_object_or_404(BackLog, pk=pk)
