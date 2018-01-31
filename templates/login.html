@@ -1,5 +1,5 @@
 {% block content %}
-<h1>Login</h1>
+<h1>Login / <a href="register/">register</a> </h1>
     <form method='POST'>
         {% csrf_token %}
         {{ form.as_p }}
