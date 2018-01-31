@@ -94,7 +94,7 @@ class LoginForm(forms.Form):
         qs = User.object.filter(email=email)
         if qs.exists():
             # user email is registered, check active/
-           user = authenticate(request, username=email, password=password)
+            user = authenticate(request, username=email, password=password)
         if user is None:
             raise forms.ValidationError("Invalid credentials")
         login(request, user)
@@ -103,22 +103,14 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+    """A form for creating new users. Includes all the required
+    fields, plus a repeated password."""
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
-
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        object = UserManager()
-        qs = User.object.filter(email=email)
-        if qs.exists():
-            raise forms.ValidationError("Email is already registered")
-        return email
+        fields = ('first_name', 'last_name', 'email',)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -127,4 +119,13 @@ class RegisterForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def save(self, commit=True):
+        # Save the provided password in hashed format
+        user = super(RegisterForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
 
