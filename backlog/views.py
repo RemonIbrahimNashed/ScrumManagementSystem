@@ -1,11 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, FormView
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import get_user_model
 from django.utils.http import is_safe_url
 from .forms import NewSprint, NewBackLog, NewTask, LoginForm, RegisterForm
+from django.contrib.auth.decorators import login_required
+
 
 User = get_user_model()
+
 
 class RequestFormAttachMixin(object):
     def get_form_kwargs(self):
@@ -29,7 +32,7 @@ class NextUrlMixin(object):
 # Create your views here.
 from .models import BackLog, Sprint, Task
 
-
+@login_required
 def home(request):
     backlogs = BackLog.objects.all()
     li =[]
@@ -43,17 +46,20 @@ def home(request):
 
 
 
+@login_required
 def backlog_sprints(request, pk):
     backlog = get_object_or_404(BackLog, pk=pk)
     return render(request, 'sprint.html', {'backlog': backlog})
 
 
+@login_required
 def sprint_tasks(request, pk, spk):
     backlog = get_object_or_404(BackLog, pk=pk)
     sprint = get_object_or_404(Sprint, pk=spk)
     return render(request, 'task.html', {'backlog': backlog, 'sprint': sprint})
 
 
+@login_required
 def new_sprint(request, pk):
     backlog = get_object_or_404(BackLog, pk=pk)
     if request.method == 'POST':
@@ -66,6 +72,7 @@ def new_sprint(request, pk):
     return render(request, 'new_sprint.html', {'backlog': backlog, 'form': NewSprint})
 
 
+@login_required
 def new_task(request, pk, spk):
     backlog = get_object_or_404(BackLog, pk=pk)
     sprint = get_object_or_404(Sprint, pk=spk)
@@ -76,12 +83,14 @@ def new_task(request, pk, spk):
             description=request.POST['description'],
             end_at=request.POST['dead_line'],
             importance=request.POST['importance'],
+            assigned_user=request.user
 
         )
         return redirect('sprint_tasks', pk, spk)
     return render(request, 'new_task.html', {'backlog': backlog, 'sprint': sprint, 'form': NewTask})
 
 
+@login_required
 def new_backlog(request):
     if request.method == 'POST':
         backlog = BackLog.objects.create(
@@ -92,6 +101,7 @@ def new_backlog(request):
     return render(request, 'new_backlog.html', {'form': NewBackLog})
 
 
+@login_required
 def sprint_tasks(request, pk, spk):
     backlog = get_object_or_404(BackLog, pk=pk)
     sprint = get_object_or_404(Sprint, pk=spk)
@@ -100,9 +110,9 @@ def sprint_tasks(request, pk, spk):
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
-    success_url = '/'
+    success_url = '/home'
     template_name = 'login.html'
-    default_next = '/'
+    default_next = '/home'
 
     def form_valid(self, form):
         next_path = self.get_next_url()
