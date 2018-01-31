@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ backlog.name }}
+{% endblock %}
+
+{% block heading %}
+   <h1> <a  href="{% url 'home' %} "> Backlogs </a> / {{ backlog.name }} </h1>
+{% endblock %}
+
+{% block content %}
+    <h1> <a href="{% url 'new_sprint' backlog.pk %}">New Sprint</a></h1>
+    <table border="1">
+    <thead >
+      <tr>
+          <th>ID</th>
+          <th>Sprint</th>
+          <th>Tasks</th>
+          <th>Start at</th>
+          <th>End at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sprint in backlog.sprints.all %}
+        <tr>
+            <td>{{ sprint.id }}</td>
+            <td><a href="{% url 'sprint_tasks' backlog.pk sprint.pk%}">{{ sprint.name }}</a></td>
+            <td>{{ sprint.tasks.all.count }}</td>
+            <td>{{ sprint.start_at }}</td>
+            <td>{{ sprint.end_at }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
