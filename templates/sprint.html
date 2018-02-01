@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block content %}
-    <h1> <a href="{% url 'new_sprint' backlog.pk %}">New Sprint</a></h1>
+    {% if request.user.is_admin %}
+        <h1> <a href="{% url 'new_sprint' backlog.pk %}">New Sprint</a></h1>
+    {% endif %}
     <table border="1">
     <thead >
       <tr>

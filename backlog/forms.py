@@ -21,7 +21,6 @@ class TaskModificationForm(forms.Form):
     assigned_user = forms.ChoiceField(required=False, widget=forms.Select, choices=users)
 
 
-
 class UserAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
