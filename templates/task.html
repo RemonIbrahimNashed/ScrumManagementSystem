@@ -9,8 +9,12 @@
 {% endblock %}
 
 {% block content %}
-<h1><a href="{% url 'new_task' backlog.pk sprint.pk %}">new task</a> </h1>
-     <table border="1">
+
+    {% if request.user.is_admin %}
+       <h1><a href="{% url 'new_task' backlog.pk sprint.pk %}">new task</a> </h1>
+    {% endif %}
+
+    <table border="1">
     <thead >
       <tr>
           <th>ID</th>
@@ -19,7 +23,11 @@
           <th>Start at</th>
           <th>End at</th>
           <th>description</th>
-          <th>status</th>
+          <th>Assigned member</th>
+          <th>Available Tasks</th>
+          {% if request.user.is_admin %}
+                <th>Change info</th>
+            {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -31,7 +39,50 @@
             <td>{{ task.start_at }}</td>
             <td>{{ task.end_at }}</td>
             <td>{{task.description}}</td>
-            <td>{{task.status}}</td>
+            <td>{% if task.assigned_user %}
+                    {{task.assigned_user.id}}. {{task.assigned_user.first_name}} {{task.assigned_user.last_name}}
+                {% else %}
+                    None
+                {% endif %}
+            </td>
+            <td>
+                {% if task.status == 3 %}
+                    Completed
+                {% else %}
+                    {% if not task.assigned_user %}
+                    <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}">
+                        {% csrf_token %}
+                        <button type='submit' name="task" value="{{ task.id }}">Choose</button>
+                    </form>
+
+                {% elif request.user == task.assigned_user and not request.user.is_admin%}
+                    <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}">
+                        {% csrf_token %}
+                        <button type='submit' name="task" value="{{ task.id }}">Mark Done</button>
+                    </form>
+                {% elif request.user == task.assigned_user and request.user.is_admin and task.status == 2  %}
+                        <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}">
+                        {% csrf_token %}
+                        <button type='submit' name="task" value="{{ task.id }}">Mark Done</button>
+                    </form>
+                    {% elif request.user.is_admin %}
+                    <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk%}">
+                        {% csrf_token %}
+                        <button type='submit' name="task" value="{{ task.id }}">Withdraw task</button>
+                    </form>
+                {% else %}
+                    Already Chosen
+                {% endif %}
+            {% endif %}
+            </td>
+            {% if request.user.is_admin and task.status != 3%}
+                <td>
+                    <form method="GET" action="{% url 'modify_task' backlog.pk sprint.pk%}">
+                        {% csrf_token %}
+                        <button type='submit' name="task" value="{{ task.id }}">Modify</button>
+                    </form>
+                </td>
+            {% endif %}
 
         </tr>
       {% endfor %}

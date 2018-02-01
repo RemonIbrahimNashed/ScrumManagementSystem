@@ -1,5 +1,5 @@
 from django.contrib import admin
-from backlog.models import BackLog, Sprint, User
+from backlog.models import BackLog, Sprint, User, Task
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserAdminChangeForm, UserAdminCreationForm
@@ -36,4 +36,5 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(BackLog)
 admin.site.register(Sprint)
+admin.site.register(Task)
 admin.site.unregister(Group)

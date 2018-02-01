@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^backlogs/new/$', views.new_backlog, name='new_backlog'),
     url(r'^backlogs/(?P<pk>\d+)/$', views.backlog_sprints, name='backlog_sprints'),
     url(r'^backlogs/(?P<pk>\d+)/sprints/(?P<spk>\d+)/$', views.sprint_tasks, name='sprint_tasks'),
+    url(r'^backlogs/(?P<pk>\d+)/sprints/(?P<spk>\d+)/control/$', views.modify_task, name='modify_task'),
     url(r'^backlogs/(?P<pk>\d+)/sprints/(?P<spk>\d+)/new$', views.new_task, name='new_task'),
     url(r'^backlogs/(?P<pk>\d+)/new/$', views.new_sprint, name='new_sprint'),
     url(r'^register/$', views.RegisterView.as_view(), name='register'),

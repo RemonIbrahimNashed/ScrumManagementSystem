@@ -4,6 +4,24 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import User, UserManager
 
 
+class TaskModificationForm(forms.Form):
+    name = forms.CharField(label="Name")
+    importance = forms.IntegerField(max_value=10, min_value=1)
+    dead_line = forms.DateField(widget=forms.TextInput(attrs=
+    {
+        'id': 'datepicker'
+    }))
+    description = forms.CharField(label="task description", max_length=500)
+    uList = []
+    users = ()
+    object = UserManager()
+    all_users = User.object.all()
+    for i in all_users:
+        users += ((i, i.first_name+i.last_name),)
+    assigned_user = forms.ChoiceField(required=False, widget=forms.Select, choices=users)
+
+
+
 class UserAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
@@ -43,12 +61,11 @@ class UserAdminChangeForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'email', 'password', 'active', 'admin')
 
     def clean_password(self):
-        '''Regardless of what the user provides, return the initial value.
+        """Regardless of what the user provides, return the initial value.
             This is done here, rather than on the field, because the
             field does not have access to the initial value
-            '''
+            """
         return self.initial["password"]
-
 
 
 class NewSprint(forms.Form):
@@ -127,5 +144,3 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-

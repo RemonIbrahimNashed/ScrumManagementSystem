@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block heading %}
   <h1>BackLogs</h1>
-
 {% endblock %}
+
+{% load backlog_extras %}
+
 {% block content %}
     <h1> <a href="{% url 'new_backlog' %}">New BackLog</a></h1>
     <table border="1">
@@ -17,20 +19,21 @@
       </thead>
       <tbody>
         {% for backlog in backlogs %}
-          <tr>
-            <td>
-                <a href="{% url 'backlog_sprints' backlog.pk %}" >{{ backlog.name }}</a> <br>
-              <small style="color: #888;">{{ backlog.description }}</small>
-            </td>
-              <td>{{ backlog.sprints.all.count }}</td>
+
+              <tr>
+                <td>
+                    <a href="{% url 'backlog_sprints' backlog.pk %}" >{{ backlog.name }}</a> <br>
+                </td>
+                  <td>{{ backlog.sprints.all.count }}</td>
 
 
-              <td>{{li}}</td>
+                  <td>{{ li|lookup:forloop.counter0}}</td>
 
 
-              <td>{{ backlog.start_at }}</td>
-              <td>{{ backlog.end_at}}</td>
-          </tr>
+                  <td>{{ backlog.start_at }}</td>
+                  <td>{{ backlog.end_at}}</td>
+              </tr>
+
         {% endfor %}
       </tbody>
     </table>
