@@ -76,10 +76,16 @@ class NewSprint(forms.Form):
 
 
 class NewBackLog(forms.Form):
-    name = forms.CharField(label="BackLog name")
+    name = forms.CharField(widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'Name'
+                                                     }))
     dead_line = forms.DateField(widget=forms.TextInput(attrs=
     {
-        'id': 'datepicker'
+        'id': 'datepicker',
+        'class': 'form-control',
+        'placeholder': 'Date'
     }))
 
 
