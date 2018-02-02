@@ -6,6 +6,7 @@ from .forms import NewSprint, NewBackLog, NewTask, LoginForm, RegisterForm, Task
 from django.contrib.auth.decorators import login_required
 from django import template
 from .models import UserManager
+import operator
 
 register = template.Library()
 
@@ -50,14 +51,14 @@ def home(request):
         for sprint in backlog.sprints.all():
             counter += sprint.tasks.all().count()
         li.append(counter)
-    return render(request, 'home.html', {'backlogs': backlogs, 'li': li})
+    return render(request, 'home.html', {'backlogs': backlogs, 'li': li, 'request': request})
 
 
 
 @login_required
 def backlog_sprints(request, pk):
     backlog = get_object_or_404(BackLog, pk=pk)
-    return render(request, 'sprint.html', {'backlog': backlog})
+    return render(request, 'sprint.html', {'backlog': backlog, 'request': request})
 
 
 @login_required
@@ -106,6 +107,10 @@ def new_backlog(request):
 def sprint_tasks(request, pk, spk):
     backlog = get_object_or_404(BackLog, pk=pk)
     sprint = get_object_or_404(Sprint, pk=spk)
+    unsorted_tasks = sprint.tasks.all()
+    all_tasks = unsorted_tasks
+    sort_type = request.POST.get('drop_down')
+    print(type(sort_type))
     if request.method == 'POST':
         try:
             selected_task = sprint.tasks.get(pk=request.POST['task'])
@@ -121,11 +126,18 @@ def sprint_tasks(request, pk, spk):
                 selected_task.status = 1
             selected_task.save()
         except (KeyError, Task.DoesNotExist):
+            if sort_type is '1':
+                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('importance'))
+            elif sort_type is '2':
+                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('end_at'))
             print("Not Selected")
-        return render(request, "task.html", {'backlog': backlog, 'sprint': sprint, 'request': request})
+
+        return render(request, "task.html", {'backlog': backlog, 'sprint': sprint,
+                                             'request': request, 'all_tasks': all_tasks})
 
     if request.method == 'GET':
-        return render(request, 'task.html', {'backlog': backlog, 'sprint': sprint, 'request': request})
+        return render(request, 'task.html', {'backlog': backlog, 'sprint': sprint,
+                                             'request': request, 'all_tasks': all_tasks})
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
@@ -152,6 +164,7 @@ def modify_task(request, pk, spk):
 
     if request.method == 'POST' and request.user.is_admin:
         form = TaskModificationForm(request.POST)
+
         if form.is_valid():
             object = UserManager()
             selected_task.name          = request.POST['name']
@@ -161,4 +174,9 @@ def modify_task(request, pk, spk):
             selected_task.assigned_user = User.object.all().get(email=form.cleaned_data['assigned_user'])
             selected_task.save()
             return redirect('sprint_tasks', pk, spk)
-    return render(request, 'modify.html', {'task': selected_task, 'sprint': sprint, 'form': TaskModificationForm})
+    else:
+        form = TaskModificationForm(initial={'name': selected_task.name,
+                                             'description': selected_task.description,
+                                             'dead_line': selected_task.end_at,
+                                             'importance': selected_task.importance})
+    return render(request, 'modify.html', {'task': selected_task, 'sprint': sprint, 'form': form})

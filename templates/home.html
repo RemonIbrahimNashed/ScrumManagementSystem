@@ -6,7 +6,9 @@
 {% load backlog_extras %}
 
 {% block content %}
-    <h1> <a href="{% url 'new_backlog' %}">New BackLog</a></h1>
+    {% if request.user.is_admin %}
+        <h1> <a href="{% url 'new_backlog' %}">New BackLog</a></h1>
+    {% endif %}
     <table border="1">
       <thead>
         <tr>
