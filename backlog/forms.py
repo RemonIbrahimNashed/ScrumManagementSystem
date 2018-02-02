@@ -141,9 +141,18 @@ class LoginForm(forms.Form):
 class RegisterForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
-
+    password1 = forms.CharField(label='',widget=forms.TextInput(attrs=
+                                                      {
+                                                          'class' : 'form-control' ,
+                                                          'placeholder' : 'Password',
+                                                          'type' : 'password'
+                                                      }))
+    password2 = forms.CharField(label='',widget=forms.TextInput(attrs=
+                                                      {
+                                                          'class' : 'form-control' ,
+                                                          'placeholder' : 'Password',
+                                                          'type' : 'password'
+                                                      }))
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email',)
@@ -163,3 +172,19 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+    def __init__(self, *args, **kwargs):
+        super(RegisterForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({
+            'class' : 'form-control' ,
+            'placeholder' : 'Name'
+            })
+        self.fields['last_name'].widget.attrs.update({
+            'class' : 'form-control' ,
+            'placeholder' : 'Name'
+            })
+        self.fields['email'].widget.attrs.update({
+            'class' : 'form-control' ,
+            'placeholder' : 'Email',
+            'type' : 'email'
+            })

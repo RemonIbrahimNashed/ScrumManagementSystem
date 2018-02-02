@@ -1,7 +1,4 @@
 {% extends "base.html" %} {% block content %}
-{% comment %} <h1>Login /
-    <a href="register/">register</a>
-</h1> {% endcomment %}
 
 <div class="row">
 
@@ -24,10 +21,13 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
-
+            <a href="register/">
+                <button type="button" class="btn btn-danger">Register</button>
+            </a>
         </form>
 
     </div>
 </div>
+
 
 {% endblock %}

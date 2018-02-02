@@ -1,9 +1,46 @@
+{% extends "base.html" %}
 {% block content %}
-    <h1>Register</h1>
-    <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-      <button type='submit' class='btn btn-default'>Submit</button>
-    </form>
+<div class="row ">
+
+        <div class="col-md-4 col-sm-8" style="margin-top: 5%">
+    
+            <form action="" method="POST" role="form">
+    
+                {% csrf_token %}
+    
+                <legend>Register</legend>
+    
+                <div class="form-group">
+                    <label for="">First Name</label>
+                    {{ form.first_name }}
+                </div>
+    
+                <div class="form-group">
+                    <label for="">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+    
+                <div class="form-group">
+                    <label for="">Email</label>
+                    {{ form.email }}
+                </div>
+    
+                <div class="form-group">
+                    <label for="">Password</label>
+                    {{ form.password1 }}
+                </div>
+    
+                <div class="form-group">
+                    <label for="">Confirm Passwrod</label>
+                    {{ form.password2 }}
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Submit</button>
+    
+            </form>
+    
+        </div>
+    </div>
+    
 
 {% endblock %}
