@@ -5,20 +5,41 @@ from .models import User, UserManager
 
 
 class TaskModificationForm(forms.Form):
-    name = forms.CharField(label="Name")
-    importance = forms.IntegerField(max_value=10, min_value=1)
+    name = forms.CharField()
+    importance = forms.IntegerField(max_value=10, min_value=1,widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'Importance',
+                                                        'type':'number',
+                                                        'min' : '1',
+                                                        'step' : '1',
+                                                        'max' : '10'
+
+                                                     }))
     dead_line = forms.DateField(widget=forms.TextInput(attrs=
     {
-        'id': 'datepicker'
+        'id': 'datepicker',
+        'class' : 'form-control' ,
+        'placeholder' : 'Importance',
+                                                        
     }))
-    description = forms.CharField(label="task description", max_length=500)
+    description = forms.CharField(max_length=500,widget=forms.TextInput(attrs=
+    {
+        'class' : 'form-control' ,
+        'placeholder' : 'Description',
+                                                        
+    }))
     uList = []
     users = ()
     object = UserManager()
     all_users = User.object.all()
     for i in all_users:
         users += ((i, i.first_name+i.last_name),)
-    assigned_user = forms.ChoiceField(required=False, widget=forms.Select, choices=users)
+    assigned_user = forms.ChoiceField(required=False,choices=users, widget=forms.Select(attrs=
+    {   
+        'class' : 'form-control selectpicker '
+                                                        
+    }))
 
 
 class UserAdminCreationForm(forms.ModelForm):
@@ -96,13 +117,32 @@ class NewBackLog(forms.Form):
 
 
 class NewTask(forms.Form):
-    name = forms.CharField(label="task name")
+    name = forms.CharField(widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'Name'
+                                                     }))
     dead_line = forms.DateField(widget=forms.TextInput(attrs=
     {
-        'id': 'datepicker'
+        'id': 'datepicker',
+        'class': 'form-control',
+        'placeholder': 'Date'
     }))
-    description = forms.CharField(label="task description", max_length=500)
-    importance = forms.IntegerField(max_value=10, min_value=1)
+    description = forms.CharField( max_length=500 , widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'description'
+                                                     }))
+    importance = forms.IntegerField(max_value=10, min_value=1,widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'Importance',
+                                                        'type':'number',
+                                                        'min' : '1',
+                                                        'step' : '1',
+                                                        'max' : '10'
+
+                                                     }))
 
 
 class LoginForm(forms.Form):
