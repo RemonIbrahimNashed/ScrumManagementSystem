@@ -5,7 +5,12 @@ from .models import User, UserManager
 
 
 class TaskModificationForm(forms.Form):
-    name = forms.CharField()
+    name = forms.CharField(widget=forms.TextInput(attrs=
+    {
+        'class' : 'form-control' ,
+        'placeholder' : 'Name',
+                                                        
+    }))
     importance = forms.IntegerField(max_value=10, min_value=1,widget=forms.TextInput(attrs=
                                                     {
                                                         'class' : 'form-control' ,
