@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^register/$', views.RegisterView.as_view(), name='register'),
     url(r'^$', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^about/$', views.AboutPage.as_view(),name="about")
 
 
 
