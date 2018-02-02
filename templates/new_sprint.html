@@ -1,16 +1,37 @@
 {% extends 'base.html' %}
 
 {% block title %}  New Sprint{% endblock %}
-
+{% comment %} 
 {% block heading %}
 <h1><a href=" {% url 'home' %}" >backlogs</a> / <a href="{% url 'backlog_sprints' backlog.pk %}">{{backlog.name}}</a> / new sprint</h1>
 
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add</button>
-  </form>
+<div class="row ">
+
+        <div class="col-md-4 col-sm-8" style="margin-top: 5%">
+
+            <form action="" method="POST" role="form">
+
+                {% csrf_token %}
+
+                <legend>Start New Sprint</legend>
+
+                <div class="form-group">
+                    <label for="">Sprint Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="">DeadLine</label>
+                    {{ form.dead_line }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Start</button>
+
+            </form>
+
+        </div>
+    </div>
 {% endblock %}
