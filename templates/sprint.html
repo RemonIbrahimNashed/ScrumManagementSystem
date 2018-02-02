@@ -4,15 +4,14 @@
   {{ backlog.name }}
 {% endblock %}
 
-{% block heading %}
+{% comment %} {% block heading %}
    <h1> <a  href="{% url 'home' %} "> Backlogs </a> / {{ backlog.name }} </h1>
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 {% block content %}
-    {% if request.user.is_admin %}
-        <h1> <a href="{% url 'new_sprint' backlog.pk %}">New Sprint</a></h1>
-    {% endif %}
-    <table border="1">
+<h1 class="text-center" style="font-family: monospace">Sprints</h1>
+    
+    <table class="table table-hover">
     <thead >
       <tr>
           <th>ID</th>
@@ -34,5 +33,10 @@
       {% endfor %}
     </tbody>
   </table>
+{% if request.user.is_admin %}
+<a href="{% url 'new_sprint' backlog.pk %}">
+  <button type="button" class="btn btn-primary">New Sprint</button>
+</a>
+{% endif %}
 {% endblock %}
 

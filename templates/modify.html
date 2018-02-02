@@ -1,16 +1,43 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %} Modify Task{% endblock %} {% block content %}
 
-{% block title %}  Modify Task{% endblock %}
 
-{% block heading %}
-   <h1>{{ task.name }}</h1>
-{% endblock %}
 
-{% block content %}
-    {% csrf_token %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Save</button>
-    </form>
+<div class="row ">
+
+    <div class="col-md-4 col-sm-8" style="margin-top: 5%">
+
+        <form action="" method="POST" role="form">
+
+            {% csrf_token %}
+
+            <legend>{{ task.name }}</legend>
+
+            <div class="form-group">
+                <label for="">Importance</label>
+                {{ form.importance }}
+            </div>
+
+
+            <div class="form-group">
+                <label for="">DeadLine</label>
+                {{ form.dead_line }}
+            </div>
+
+            <div class="form-group">
+                <label for="">Description</label>
+                {{ form.description }}
+            </div>
+
+
+            <div class="form-group">
+                <label for="">Assigned user</label>
+                {{ form.assigned_user }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        </form>
+
+    </div>
+</div>
 {% endblock %}
