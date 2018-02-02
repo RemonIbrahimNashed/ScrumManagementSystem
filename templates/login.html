@@ -1,9 +1,33 @@
-{% block content %}
-<h1>Login / <a href="register/">register</a> </h1>
-    <form method='POST'>
-        {% csrf_token %}
-        {{ form.as_p }}
-      <button type='submit' class='btn btn-default'>Submit</button>
-    </form>
+{% extends "base.html" %} {% block content %}
+{% comment %} <h1>Login /
+    <a href="register/">register</a>
+</h1> {% endcomment %}
+
+<div class="row">
+
+    <div class="col-md-4 col-md-offset-4 col-sm-8" style="margin-top: 5%">
+
+        <form action="" method="POST" role="form">
+
+            {% csrf_token %}
+
+            <legend>Login</legend>
+
+            <div class="form-group">
+                <label for="">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="">Password</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+    </div>
+</div>
 
 {% endblock %}

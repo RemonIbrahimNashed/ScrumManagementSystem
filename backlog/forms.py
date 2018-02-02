@@ -94,9 +94,17 @@ class NewTask(forms.Form):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(label='Email')
-    password = forms.CharField(widget=forms.PasswordInput)
-
+    email = forms.EmailField(widget=forms.TextInput(attrs=
+                                                    {
+                                                        'class' : 'form-control' ,
+                                                        'placeholder' : 'Email'
+                                                     }))
+    password = forms.CharField(widget=forms.TextInput(attrs=
+                                                      {
+                                                          'class' : 'form-control' ,
+                                                          'placeholder' : 'Password',
+                                                          'type' : 'password'
+                                                      }))
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(LoginForm, self).__init__(*args, **kwargs)
