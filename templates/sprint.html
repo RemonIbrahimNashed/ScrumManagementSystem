@@ -17,6 +17,7 @@
           <th>Tasks</th>
           <th>Start at</th>
           <th>End at</th>
+          <th>State</th>
       </tr>
     </thead>
     <tbody>
@@ -27,14 +28,19 @@
             <td>{{ sprint.tasks.all.count }}</td>
             <td>{{ sprint.start_at }}</td>
             <td>{{ sprint.end_at }}</td>
+            <td>
+                {% if sprint.state == 1 %} Not started {% elif sprint.state == 2 %} In-Progress {% else %} Completed {% endif %}
+            </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 {% if request.user.is_admin %}
-<a href="{% url 'new_sprint' backlog.pk %}">
-  <button type="button" class="btn btn-primary">New Sprint</button>
-</a>
+    {% if can_add %}
+        <a href="{% url 'new_sprint' backlog.pk %}">
+          <button type="button" class="btn btn-primary">New Sprint</button>
+        </a>
+    {% endif %}
 {% endif %}
 {% endblock %}
 

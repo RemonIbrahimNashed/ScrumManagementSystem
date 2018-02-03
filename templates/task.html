@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} {{ backlog.name }} {% endblock %}  {% block content %}
+{% extends 'base.html' %} {% block title %} {{ backlog.name }} - {{sprint.name}} {% endblock %}  {% block content %}
 <h1 class="text-center" style="font-family: monospace">Current Sprint Backlog</h1>
 
 <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}" name="form">
@@ -40,7 +40,7 @@
     </thead>
     <tbody>
         {% for task in all_tasks %}
-         <tr style="background-color:{% if task.status == 1 %}rgba(200, 86, 86, 0.67)
+         <tr style="background-color:{% if task.status == 1 or task.assigned_user == None%}rgba(200, 86, 86, 0.67)
         {% elif task.status == 2 %}rgba(218, 203, 68, 0.67)
         {% else %}rgba(106, 225, 102, 0.67)
         {% endif %} ;">
@@ -54,7 +54,7 @@
                 {% else %} None {% endif %}
             </td>
             <td>
-                {% if task.status == 3 %} Completed {% else %} {% if not task.assigned_user %}
+                {% if task.status == 3 %} Completed {% else %} {% if not task.assigned_user and sprint.state != 1 %}
                 <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}">
                     {% csrf_token %}
                     <button type='submit' class="form-control" name="task" value="{{ task.id }}">Choose</button>
@@ -69,12 +69,12 @@
                     {% csrf_token %}
                     <button type='submit' class="form-control" name="task" value="{{ task.id }}">Mark Done</button>
                 </form>
-                {% elif request.user.is_admin %}
+                {% elif request.user.is_admin and sprint.state != 1%}
                 <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk%}">
                     {% csrf_token %}
                     <button type='submit' class="form-control" name="task" value="{{ task.id }}">Withdraw task</button>
                 </form>
-                {% else %} Already Chosen {% endif %} {% endif %}
+                {% else %} {% if sprint.state != 1%}Already Chosen{% endif %} {% endif %} {% endif %}
             </td>
             {% if request.user.is_admin and task.status != 3%}
             <td>
@@ -91,7 +91,14 @@
 </table>
 
 {% if request.user.is_admin %}
-<a href="{% url 'new_task' backlog.pk sprint.pk %}">
-    <button type="button" class="btn btn-primary">New Task</button>
-</a>
+    {% if sprint.state == 1 %}
+        <a href="{% url 'new_task' backlog.pk sprint.pk %}" style="text-decoration: none;">
+            <button type="button" class="btn btn-primary">New Task</button>
+        </a>
+        <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk%}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type='submit' class="btn btn-danger" name="start_sprint" value="start">Start sprint</button>
+        </form>
+
+    {% endif %}
 {% endif %} {% endblock %}

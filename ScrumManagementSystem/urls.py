@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from backlog import views
 from django.contrib.auth.views import LogoutView
+from django.urls import reverse_lazy
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -14,7 +15,7 @@ urlpatterns = [
     url(r'^backlogs/(?P<pk>\d+)/new/$', views.new_sprint, name='new_sprint'),
     url(r'^register/$', views.RegisterView.as_view(), name='register'),
     url(r'^$', views.LoginView.as_view(), name='login'),
-    url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^logout/$', LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
     url(r'^about/$', views.AboutPage.as_view(),name="about"),
 
 
