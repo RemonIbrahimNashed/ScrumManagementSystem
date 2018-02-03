@@ -1,8 +1,4 @@
-{% extends 'base.html' %} {% block title %} {{ backlog.name }} {% endblock %} {% comment %} {% block heading %}
-<h1>
-    <a href="{% url 'home' %}">backlogs</a>/
-    <a href="{% url 'backlog_sprints' backlog.pk %}">{{backlog.name}}</a>/{{sprint.name}}</h1>
-{% endblock %} {% endcomment %} {% block content %}
+{% extends 'base.html' %} {% block title %} {{ backlog.name }} {% endblock %}  {% block content %}
 <h1 class="text-center" style="font-family: monospace">Current Sprint Backlog</h1>
 
 <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}" name="form">
@@ -98,9 +94,4 @@
 <a href="{% url 'new_task' backlog.pk sprint.pk %}">
     <button type="button" class="btn btn-primary">New Task</button>
 </a>
-{% endif %}
-
-
-</script>
-
-{% endblock %}
+{% endif %} {% endblock %}
