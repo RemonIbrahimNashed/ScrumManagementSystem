@@ -38,6 +38,7 @@ class TaskModificationForm(forms.Form):
     users = ()
     object = UserManager()
     all_users = User.object.all()
+    users += ((None, '-----------------------'),)
     for i in all_users:
         users += ((i, i.first_name+i.last_name),)
     assigned_user = forms.ChoiceField(required=False,choices=users, widget=forms.Select(attrs=

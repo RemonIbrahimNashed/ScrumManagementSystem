@@ -103,7 +103,7 @@ class Sprint(models.Model):
     name = models.CharField(max_length=25)
     start_at = models.DateField(auto_now_add=True)
     end_at = models.DateField(auto_now_add=False, auto_now=False, null=True)
-    is_done = models.BooleanField(default=False)
+    state = models.IntegerField(default=1)  # 1: Not started   2: In Progress   3: Done
     backlog = models.ForeignKey(BackLog, related_name='sprints', on_delete=models.CASCADE)
 
     def __str__(self):
