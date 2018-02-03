@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView ,View
 from django.contrib.auth import get_user_model
 from django.utils.http import is_safe_url
 from .forms import NewSprint, NewBackLog, NewTask, LoginForm, RegisterForm, TaskModificationForm
@@ -180,3 +180,6 @@ def modify_task(request, pk, spk):
                                              'dead_line': selected_task.end_at,
                                              'importance': selected_task.importance})
     return render(request, 'modify.html', {'task': selected_task, 'sprint': sprint, 'form': form})
+class AboutPage(View):
+    def get(self,request):
+        return render(request,'about.html')
