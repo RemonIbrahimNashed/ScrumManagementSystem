@@ -8,7 +8,9 @@ class TaskModificationForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput(attrs=
     {
         'class' : 'form-control' ,
-        'placeholder' : 'Description',}))
+        'placeholder' : 'Name',
+                                                        
+    }))
     importance = forms.IntegerField(max_value=10, min_value=1,widget=forms.TextInput(attrs=
                                                     {
                                                         'class' : 'form-control' ,
