@@ -7,8 +7,8 @@
         <div class="col-md-2">
             <strong>Sort By :</strong>
             <select class="form-control" name="drop_down">
-                <option value="1" onmouseup="javascript: submitform()">Importance</option>
-                <option value="2" onmouseup="javascript: submitform()">Dead line</option>
+                <option value="2" onmouseup="javascript: submitform()" {% if not imp %}selected{% endif %}>Dead line</option>
+                <option value="1" onmouseup="javascript: submitform()" {% if imp %}selected{% endif %}>Importance</option>
             </select>
         </div>
     </div>

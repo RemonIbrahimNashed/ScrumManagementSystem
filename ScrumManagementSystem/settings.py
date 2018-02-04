@@ -13,7 +13,7 @@ SECRET_KEY = '8a=nt+cvw6ka2@5et%9ftet!hpzv75ay5-z#($k4csd(mqhohz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'backlog.middleware.admin_panel_middleware.RestrictAdminPageMiddleware',
 ]
 
 ROOT_URLCONF = 'ScrumManagementSystem.urls'
