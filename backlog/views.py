@@ -34,7 +34,7 @@ class NextUrlMixin(object):
         next_post = request.POST.get('next')
         redirect_path = next_ or next_post or None
         if is_safe_url(redirect_path, request.get_host()):
-                return redirect_path
+            return redirect_path
         return self.default_next
 
 
@@ -52,7 +52,6 @@ def home(request):
             counter += sprint.tasks.all().count()
         li.append(counter)
     return render(request, 'home.html', {'backlogs': backlogs, 'li': li, 'request': request})
-
 
 
 @login_required
@@ -128,13 +127,6 @@ def sprint_tasks(request, pk, spk):
     all_done = True
     if len(qs2) > 0 and len(qs1) > 0:
         all_done = False
-
-
-    # object = SprintManager(spk)
-    # all_done = Sprint.
-    # for i in all_tasks:
-    #     if not i.status == 3:
-    #         all_done = False
     if request.method == 'POST':
         try:
             helper = request.POST.get('start_sprint')
@@ -143,7 +135,6 @@ def sprint_tasks(request, pk, spk):
                 sprint.save()
                 return render(request, "task.html", {'backlog': backlog, 'sprint': sprint,
                                                      'request': request, 'all_tasks': all_tasks, 'imp': imp})
-
 
             selected_task = sprint.tasks.get(pk=request.POST['task'])
             if selected_task.status == 2 and selected_task.assigned_user == request.user and request.user.is_admin:
@@ -157,7 +148,6 @@ def sprint_tasks(request, pk, spk):
                 selected_task.assigned_user = None
                 selected_task.status = 1
 
-
             selected_task.save()
             qs1 = sprint.tasks.filter(status=1)
             qs2 = sprint.tasks.filter(status=2)
@@ -165,22 +155,16 @@ def sprint_tasks(request, pk, spk):
                 all_done = False
             else:
                 all_done = True
-
-            # for i in all_tasks:
-            #     if not i.status == 3:
-            #         all_done = False
-            #
             if all_done:
                 sprint.state = 3
                 sprint.save()
         except (KeyError, Task.DoesNotExist):
             if sort_type is '1':
-                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('importance'))
+                all_tasks = sprint.tasks.order_by('importance')
                 imp = True
             elif sort_type is '2':
-                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('end_at'))
+                all_tasks = sprint.tasks.order_by('end_at')
                 imp = False
-
 
         return render(request, "task.html", {'backlog': backlog, 'sprint': sprint,
                                              'request': request, 'all_tasks': all_tasks, 'imp': imp})
@@ -191,12 +175,10 @@ def sprint_tasks(request, pk, spk):
 
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
-
     form_class = LoginForm
     success_url = '/home'
     template_name = 'login.html'
     default_next = '/home'
-
 
     def form_valid(self, form):
         next_path = self.get_next_url()

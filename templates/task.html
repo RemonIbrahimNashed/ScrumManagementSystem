@@ -86,6 +86,8 @@
             {% endif %}
 
         </tr>
+        {% empty %}
+            <tr> <td colspan="9">No Tasks have been added yet.</td> </tr>
         {% endfor %}
     </tbody>
 </table>
