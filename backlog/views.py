@@ -175,10 +175,10 @@ def sprint_tasks(request, pk, spk):
                 sprint.save()
         except (KeyError, Task.DoesNotExist):
             if sort_type is '1':
-                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('importance'))
+                all_tasks = sprint.tasks.order_by('importance')
                 imp = True
             elif sort_type is '2':
-                all_tasks = sorted(unsorted_tasks, key=operator.attrgetter('end_at'))
+                all_tasks = sprint.tasks.order_by('end_at')
                 imp = False
 
 
