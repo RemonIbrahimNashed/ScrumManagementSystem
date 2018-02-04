@@ -32,6 +32,8 @@
                 {% if sprint.state == 1 %} Not started {% elif sprint.state == 2 %} In-Progress {% else %} Completed {% endif %}
             </td>
         </tr>
+      {% empty %}
+            <tr> <td colspan="6">No Sprints have been added yet.</td> </tr>
       {% endfor %}
     </tbody>
   </table>
