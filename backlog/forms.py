@@ -40,8 +40,8 @@ class TaskModificationForm(forms.Form):
     all_users = User.object.all()
     users += ((None, '-----------------------'),)
     for i in all_users:
-        users += ((i, i.first_name+i.last_name),)
-    assigned_user = forms.ChoiceField(required=False,choices=users, widget=forms.Select(attrs=
+        users += ((i, str(i.id)+'. '+i.first_name+i.last_name),)
+    assigned_user = forms.ChoiceField(required=False, choices=users, widget=forms.Select(attrs=
     {   
         'class' : 'form-control selectpicker '
                                                         
@@ -154,14 +154,15 @@ class NewTask(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs=
                                                     {
-                                                        'class' : 'form-control' ,
-                                                        'placeholder' : 'Email'
+                                                        'class': 'form-control',
+                                                        'placeholder': 'Email',
+                                                        'type': 'email'
                                                      }))
     password = forms.CharField(widget=forms.TextInput(attrs=
                                                       {
-                                                          'class' : 'form-control' ,
-                                                          'placeholder' : 'Password',
-                                                          'type' : 'password'
+                                                          'class': 'form-control',
+                                                          'placeholder': 'Password',
+                                                          'type': 'password'
                                                       }))
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -172,11 +173,11 @@ class LoginForm(forms.Form):
         data = self.cleaned_data
         email = data.get("email")
         password = data.get("password")
-        object = UserManager()
-        qs = User.object.filter(email=email)
-        if qs.exists():
-            # user email is registered, check active/
-            user = authenticate(request, username=email, password=password)
+        # object = UserManager()
+        # qs = User.object.filter(email=email)
+        # if qs.exists():
+        #     # user email is registered, check active/
+        user = authenticate(request, username=email, password=password)
         if user is None:
             raise forms.ValidationError("Invalid credentials")
         login(request, user)

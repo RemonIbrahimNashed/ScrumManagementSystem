@@ -18,6 +18,4 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(next_page=reverse_lazy('login')), name='logout'),
     url(r'^about/$', views.AboutPage.as_view(),name="about"),
 
-
-
 ]
