@@ -30,6 +30,9 @@
                   <td>{{ backlog.start_at }}</td>
                   <td>{{ backlog.end_at}}</td>
               </tr>
+          {% empty %}
+            <tr> <td colspan="5">No BackLogs have been added yet.</td> </tr>
+          
 
         {% endfor %}
       </tbody>
