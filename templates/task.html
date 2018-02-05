@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block title %} {{ backlog.name }} - {{sprint.name}} {% endblock %}  {% block content %}
+{% extends 'task_base.html' %} {% block title %} {{ backlog.name }} - {{sprint.name}} {% endblock %}  {% block content %}
 <h1 class="text-center" style="font-family: monospace">Current Sprint Backlog</h1>
 
 <form method="POST" action="{% url 'sprint_tasks' backlog.pk sprint.pk %}" name="form">
