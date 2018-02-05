@@ -41,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'backlog.middleware.admin_panel_middleware.RestrictAdminPageMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ScrumManagementSystem.urls'
@@ -131,7 +132,12 @@ if os.getcwd() == '/app':
 
     # Static asset configuration
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, "static"),
     )
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
