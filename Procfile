@@ -1,0 +1,1 @@
+web: gunicorn ScrumManagementSystem.wsgi --log-file -
